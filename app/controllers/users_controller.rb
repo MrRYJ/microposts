@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   
   def show # 追加
-   @user = User.find(params[:id])
+    @user = User.find(params[:id])
   end
   
   def new
@@ -17,6 +17,35 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
+  
+  def edit 
+   @user = User.find(params[:id]) 
+   if  @user == current_user
+   
+   else
+     flash[:success] = "編集できません。"
+     redirect_to current_user
+   end 
+  end
+         
+  def update
+   @user = User.find(params[:id]) 
+   if @user == current_user
+   else
+     flash[:success] = "編集できません。"
+     redirect_to current_user
+   end
+   
+    if @user.update(user_params) 
+      flash[:success] = "編集が完了しました。"
+      redirect_to @user
+      
+  else 
+    render "edit"
+    end
+  end
+
+  
 
   private
 
